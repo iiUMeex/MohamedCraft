@@ -82,7 +82,7 @@ if (message.content.startsWith(prefix + 'help')) {
 	let embed = new Discord.RichEmbed()
     .setAuthor(`${message.author.tag}`, message.author.avatarURL)
 	.setColor('RANDOM')
-	.addField(".سرعة","**لبدأ لعبة سرعة الكتابة**")
+	.addField(".اسرع كتابه","**لبدأ لعبة سرعة الكتابة**")
 	.addField(".نقاطي","**لعرض النقاط الخاصة بك**")
 .addField("**--------------------------------**","** **")
 .addField("**بعض لاالعاب قادمه وشكرا**","** **")
