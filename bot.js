@@ -28,7 +28,6 @@ client.on('ready', () => {
 let points = JSON.parse(fs.readFileSync('./typing/typePTS.json', 'utf8')); // يقوم بقراءه ملف النقاط , والمسار حق النقاط
 const prefix = "."; // البرفكس العام لجميع الأوامر
 
-client.on('message', message => {
 if (!points[message.author.id]) points[message.author.id] = { // يقوم الكود تلقائياً في حال لم يجد نقاط العضو بإنشاء نقاط له ويتم إرسالها الملف المخصص
 	points: 0,
   };
@@ -62,7 +61,6 @@ message.channel.send('**لديك 15 ثانية لكتابة الكلمة**').the
 	})
 }
 });
-client.on('message', message => {
 if (message.content.startsWith(prefix + 'نقاطي')) {
 	if(!message.channel.guild) return message.reply('**هذا الأمر للسيرفرات فقط**').then(m => m.delete(3000));
 	let userData = points[message.author.id];
@@ -80,7 +78,6 @@ if (message.content.startsWith(prefix + 'نقاطي')) {
 client.on('guildCreate', guild => {
 	console.log(`Added to a server by: ${guild.owner.user.username} || Server name: ${guild.name} || Users: ${guild.memberCount}`); // ايفنت يقوم بإرسال إلى الكونسل بأنه قد قامت احد السيرفر بدعوة البوت
 });
-client.on('message', message => {
 if (message.content.startsWith(prefix + 'help')) {
 	if(!message.channel.guild) return message.reply('**هذا الأمر للسيرفرات فقط**').then(m => m.delete(300));
 	let embed = new Discord.RichEmbed()
@@ -96,5 +93,4 @@ if (message.content.startsWith(prefix + 'help')) {
 
 }
 });
-client.login("التوكن الخاص بك");
-
+client.login(process.env.BOT_TOKEN);
