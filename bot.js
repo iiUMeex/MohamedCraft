@@ -61,7 +61,6 @@ message.channel.send('**لديك 15 ثانية لكتابة الكلمة**').the
 }
 });
 if (message.content.startsWith(prefix + 'نقاطي')) {
-=	let userData = points[message.author.id];
 	let embed = new Discord.RichEmbed()
     .setAuthor(`${message.author.tag}`, message.author.avatarURL)
 	.setColor('#000000')
