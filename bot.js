@@ -65,7 +65,7 @@ client.on('message', async message => {
 
     if (message.content.toUpperCase() === `${prefix}payyou`) {
 
-        money.updateBal(message.author.id, 1000000) //.then((i) => { // money.updateBal grabs the (userID, value) value being how much you want to add, and puts it into 'i'.
+        client.updateBal(message.author.id, 1000000) //.then((i) => { // money.updateBal grabs the (userID, value) value being how much you want to add, and puts it into 'i'.
              message.channel.send(`**You got $1000000!**\n**New Balance:** ${i.money}`);
         
 
@@ -73,7 +73,7 @@ client.on('message', async message => {
 
     if (message.content.toUpperCase() === `${prefix}payfine`) {
 
-        money.updateBal(message.author.id, -500).then((i) => { // Since the 'value' is -500, it will 'add' -500, making the bal $500 lower.
+        client.updateBal(message.author.id, -500).then((i) => { // Since the 'value' is -500, it will 'add' -500, making the bal $500 lower.
             message.channel.send(`**You paid your fine of $500!**\n**New Balance:** ${i.money}`);
         })
 
