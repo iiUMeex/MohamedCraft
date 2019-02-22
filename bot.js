@@ -20,7 +20,7 @@ client.on('message',async message => {
     
 if(message.author.bot) return;
 if(!credits[message.author.id]) credits[message.author.id] = {
-    credits: 50
+    credits: 0
 };
 
 let userData = credits[message.author.id];
@@ -30,14 +30,12 @@ fs.writeFile("./creditsCode.json", JSON.stringify(credits), (err) => {
     if (err) console.error(err);
   });
   credits[message.author.id] = {
-      credits: m + 0.5,
+      credits: m + 1,
   }
   
     if(message.content.startsWith(prefix + "credit" || prefix + "credits")) {
 message.channel.send(`**${message.author.username}, your :credit_card: balance is \`\`${userData.credits}\`\`.**`);
 
-message.channel.send(creditsEmbed);
-       
        } else if(mentionn && args[2]) {
            if(isNaN(args[2])) return message.channel.send(`**❎ |** The **"Number"** You Entered **Isn't Correct**.`);
           if(mentionn.id === message.author.id) return message.channel.send(`**❎ |** You Can't Give **Credits** To **Yourself**.`);
@@ -93,26 +91,5 @@ client.on('message', async message => {
        coolDown.remove(message.author.id);
     },86400000);
     }
-});
-
-client.on('message', message => {
-     if(!message.channel.guild) return;
-                if(message.content.startsWith(prefix + 'allbots')) {
-
-    
-    if (message.author.bot) return;
-    let i = 1;
-        const botssize = message.guild.members.filter(m=>m.user.bot).map(m=>`${i++} - <@${m.id}>`);
-          const embed = new Discord.RichEmbed()
-          .setAuthor(message.author.tag, message.author.avatarURL)
-          .setDescription(`**Found ${message.guild.members.filter(m=>m.user.bot).size} bots in this Server**
-${botssize.join('\n')}`)
-.setFooter(client.user.username, client.user.avatarURL)
-.setTimestamp();
-message.channel.send(embed)
-
-}
-
-
 });
 client.login(process.env.BOT_TOKEN);  //لا تحط التوكن حقك هنا
