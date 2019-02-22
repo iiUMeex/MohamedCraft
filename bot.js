@@ -18,7 +18,7 @@ client.on("message", (message) => {
   if (message.author.bot) return;
     if (message.author.id === client.user.id) return;
     if(!message.channel.guild) return;
-if (message.content.startsWith(prefix + 'credit')) {
+    if(message.content.startsWith(prefix + "credit" || prefix + "credits")) {
   if(men) {
   if (!profile[men.id]) profile[men.id] = {
    lastDaily:'Not Collected',
@@ -28,8 +28,9 @@ if (message.content.startsWith(prefix + 'credit')) {
   if(men) {
 message.channel.send(`** ${men.username}, :credit_card: balance` + " is `" + `${profile[men.id].credits}$` + "`.**")
 } else {
- message.channel.send(`** ${message.author.username}, your :credit_card: balance` + " is `" + `${profile[message.author.id].credits}$` + "`.**")
+message.channel.send(`**${message.author.username}, your :credit_card: balance is \`\`${userData.credits}\`\`.**`);
 }
+});
 }
 if(message.content.startsWith(prefix + "daily")) {
 
@@ -60,7 +61,7 @@ if(args[0].startsWith("*")) return  message.channel.send('**!! I Cant Do it**');
             let firstMentioned = message.mentions.users.first();
             defineduser = (firstMentioned)
             if (!defineduser) return message.channel.send(`**Usage: ${prefix}trans @someone number**`);
-            if(defineduser.id === message.author.id) return message.channel.send("***Transfering to your self hah ?!***")
+            if(defineduser.id === message.author.id) return message.channel.send("***بجد والله ?!***")
             var mentionned = message.mentions.users.first();
 if (!profile[sender.id]) profile[sender.id] = {}
 if (!profile[sender.id].credits) profile[sender.id].credits = 310;
