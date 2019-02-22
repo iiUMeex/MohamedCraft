@@ -13,83 +13,83 @@ client.on('message', msg => {
   }
 });
 
-const credits = JSON.parse(fs.readFileSync("./creditsCode.json", "utf8"));
-const coolDown = new Set();
-
-client.on('message',async message => {
-    
-if(message.author.bot) return;
-if(!credits[message.author.id]) credits[message.author.id] = {
-    credits: 0
-};
-
-let userData = credits[message.author.id];
-let m = userData.credits;
-
-fs.writeFile("./creditsCode.json", JSON.stringify(credits), (err) => {
-    if (err) console.error(err);
-  });
-  credits[message.author.id] = {
-      credits: m + 1,
+client.on("message", (message) => {
+  let men = message.mentions.users.first()
+  if (message.author.bot) return;
+    if (message.author.id === client.user.id) return;
+    if(!message.channel.guild) return;
+if (message.content.startsWith(prefix + 'credit')) {
+  if(men) {
+  if (!profile[men.id]) profile[men.id] = {
+   lastDaily:'Not Collected',
+   credits: 1,
+ };
   }
-  
-    if(message.content.startsWith(prefix + "credit" || prefix + "credits")) {
-message.channel.send(`**${message.author.username}, your :credit_card: balance is \`\`${userData.credits}\`\`.**`);
+  if(men) {
+message.channel.send(`** ${men.username}, :credit_card: balance` + " is `" + `${profile[men.id].credits}$` + "`.**")
+} else {
+ message.channel.send(`** ${message.author.username}, your :credit_card: balance` + " is `" + `${profile[message.author.id].credits}$` + "`.**")
+}
+}
+if(message.content.startsWith(prefix + "daily")) {
 
-       } else if(mentionn && args[2]) {
-           if(isNaN(args[2])) return message.channel.send(`**❎ |** The **"Number"** You Entered **Isn't Correct**.`);
-          if(mentionn.id === message.author.id) return message.channel.send(`**❎ |** You Can't Give **Credits** To **Yourself**.`);
-           if(args[2] > credits[author].credits) return message.channel.send(`**❎ |** You don't have **Enough** credits to give to ${mentionn}`);
-          let first = Math.floor(Math.random() * 9);
-          let second = Math.floor(Math.random() * 9);
-          let third = Math.floor(Math.random() * 9);
-          let fourth = Math.floor(Math.random() * 9);
-          let num = `${first}${second}${third}${fourth}`;
-         
-          message.channel.send(`**🛡 |** **Type** \`${num}\` To **Complete** the transfer!`).then(m => {
-              message.channel.awaitMessages(r => r.author.id === message.author.id, { max: 1, time: 20000, errors:['time'] }).then(collected => {
-                  let c = collected.first();
-                  if(c.content === num) {
-                          message.channel.send(`**✅ |** Successfully **Transfered** \`$${args[2]}\` !`);
-                          m.delete();
-                          c.delete();
-                          credits[author].credits += (-args[2]);
-                          credits[mentionn.id].credits += (+args[2]);
-                          fs.writeFileSync(creditsPath, JSON.stringify(credits, null, 4));
-                  } else {
-                          m.delete();
-                  }
-              });
-          });
-         
-      } else {
-          message.channel.send(`**❎ |** The **Syntax** should be like **\`${prefix}credits <Mention> [Ammount]\`**`);
-      }
-});
 
-client.on('message', async message => {
-    let amount = 250;
-    if(message.content.startsWith(prefix + "daily")) {
-    if(message.author.bot) return;
-    if(coolDown.has(message.author.id)) return message.channel.send(`**:stopwatch: | ${message.author.username}, your daily :yen: credits refreshes in \`\`1 Day\`\`.**`);
-    
-    let userData = credits[message.author.id];
-    let m = userData.credits + amount;
-    credits[message.author.id] = {
-    credits: m
-    };
-
-    fs.writeFile("./creditsCode.json", JSON.stringify(userData.credits + amount), (err) => {
-    if (err) console.error(err);
-    });
-    
-    message.channel.send(`**:atm: | ${message.author.username}, you received your :yen: ${amount} credits!**`).then(() => {
-        coolDown.add(message.author.id);
-    });
-    
-    setTimeout(() => {
-       coolDown.remove(message.author.id);
-    },86400000);
-    }
+  if(profile[message.author.id].lastDaily != moment().format('day')) {
+   profile[message.author.id].lastDaily = moment().format('day')
+   profile[message.author.id].credits += 310
+    message.channel.send(`:atm: |**${message.author.username} you collect your \`310\` :yen: daily credits!**`)
+} else {
+    message.channel.send(`**:stopwatch: | ${message.author.username}, your daily :yen: credits refreshes ${moment().endOf('day').fromNow()}**`)
+}
+}
+let cont = message.content.slice(prefix.length).split(" ");
+let args = cont.slice(2);
+let sender = message.author
+if(message.content.startsWith(prefix + 'credits')) {
+if (!args[0]) {message.channel.send(`**Usage: ${prefix}credits @someone amount**`); 
+         return;
+           }
+        // We should also make sure that args[0] is a number
+        if (isNaN(args[0])) {
+            message.channel.send(`**Usage: ${prefix}credits @someone number**`);
+            return; // Remember to return if you are sending an error message! So the rest of the code doesn't run.
+             }
+             if(profile[message.author.id].credits < args[0]) return message.channel.send("**Your Credits is not enough  that**")
+if(args[0].startsWith("*")) return  message.channel.send('**!! I Cant Do it**');
+				 let defineduser = '';
+            let firstMentioned = message.mentions.users.first();
+            defineduser = (firstMentioned)
+            if (!defineduser) return message.channel.send(`**Usage: ${prefix}trans @someone number**`);
+            if(defineduser.id === message.author.id) return message.channel.send("***Transfering to your self hah ?!***")
+            var mentionned = message.mentions.users.first();
+if (!profile[sender.id]) profile[sender.id] = {}
+if (!profile[sender.id].credits) profile[sender.id].credits = 310;
+fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
+if (err) console.error(err);
+})
+var x = ['5587' ,' 9978' , '3785' , '7734' , '9864' , '7681' , '3758' , '7834' , '3489' , '1382' , '7389' , '8762' , '0889' , '0388' , '3316' , '0976' , '8603' , '1842' , '4565' , '9524' , '9524' , '0964' , '5930' , '5678' , '9567' , '6099' , '7058' , '0001' , '1324' , '9834' , '7668' , '0378' , '7055' , '9733' , '9876' , '9846' , '9685' , '8574' , '8975' , '9845' , '9862' , '0069' , '0807' , '0673' , '0813' , '1235' , '6879'];
+var x2 = ['5587' ,' 9978' , '3785' , '7734' , '9864' , '7681' , '3758' , '7834' , '3489' , '1382' , '7389' , '8762' , '0889' , '0388' , '3316' , '0976' , '8603' , '1842' , '4565' , '9524' , '9524' , '0964' , '5930' , '5678' , '9567' , '6099' , '7058' , '0001' , '1324' , '9834' , '7668' , '0378' , '7055' , '9733' , '9876' , '9846' , '9685' , '8574' , '8975' , '9845' , '9862' , '0069' , '0807' , '0673' , '0813' , '1235' , '6879'];
+        var x3 = Math.floor(Math.random()*x.length)
+        message.channel.send(` \`${args}\`** : الملبغ**  \n \`${x[x3]}\` ** : اكتب الرقم التالي حتي تتم عملية التحويل **`).then(msg1=> { 
+        var r = message.channel.awaitMessages(msg => msg.content == x2[x3], { maxMatches : 1, time : 60000, errors : ['time'] })
+        r.catch(() => {
+            message.delete()
+            r.delete()
+            msg.delete()
+            message.channel.sendEmbed(embed)
+        })
+        r.then(s=> {
+      var mando = message.mentions.users.id;
+      if  (!profile[defineduser.id]) profile[defineduser.id] = {}
+      if (!profile[defineduser.id].credits) profile[defineduser.id].credits = 200;
+      profile[defineduser.id].credits += (+args[0]);
+      profile[sender.id].credits += (-args[0]);
+      let mariam = message.author.username
+message.channel.send(`**:moneybag: | ${message.author.username}, has transferrerd ` + "`" + args[0] + "$` to " + `<@${defineduser.id}>**`)
+mentionned.send(`:credit_card: | Transfer Receipt \`\`\`\`You have received ${args[0]} from user ${message.author.username} (ID: ${message.author.id})\`\`\`\``);
+               message.channel.sendEmbed(embed)
+        })
+        })
+}
 });
 client.login(process.env.BOT_TOKEN);  //لا تحط التوكن حقك هنا
