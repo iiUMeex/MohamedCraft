@@ -15,6 +15,7 @@ client.on('message', msg => {
 
 const pretty = require('pretty-ms'); // npm i pretty-ms
 const credits = require('./Credits.json');
+const creditsPath = './Credits.json';
 client.on('message',async message => {
     if(message.author.bot || message.channel.type === 'dm') return;
     let args = message.content.split(' ');
@@ -37,7 +38,8 @@ client.on('message',async message => {
        if(!args[2]) {
         let credits = new Discord.Rich()
        .setColor("#36393e")
-       .addField(`❯ credits`, `» \`${credits[mention.id].credits} $\`\n`, true)
+       .setThumbnail(mention.avatarURL)
+       .addField(`❯ الكردت`, `» \`${credits[mention.id].credits} $\`\n`, true)
        message.channel.send(credits);
        
        } else if(mentionn && args[2]) {
