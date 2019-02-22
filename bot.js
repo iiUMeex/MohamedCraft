@@ -13,71 +13,73 @@ client.on('message', msg => {
   }
 });
 
-const credits = JSON.parse(fs.readFileSync("./creditsCode.json", "utf8"));
-const coolDown = new Set();
-
+const pretty = require('pretty-ms'); // npm i pretty-ms
+const credits = require('./Credits.json');
+const creditsPath = './Credits.json';
 client.on('message',async message => {
-    
-if(message.author.bot) return;
-if(!credits[message.author.id]) credits[message.author.id] = {
-    credits: 50
-};
-
-let userData = credits[message.author.id];
-let m = userData.credits;
-
-fs.writeFile("./creditsCode.json", JSON.stringify(credits), (err) => {
-    if (err) console.error(err);
-  });
-  credits[message.author.id] = {
-      credits: m + 0.5,
+    if(message.author.bot || message.channel.type === 'dm') return;
+    let args = message.content.split(' ');
+    let author = message.author.id;
+    if(!credits[author]) credits[author] = { messages: 0, credits: 0, xp: 0, daily: 86400000 };
+    credits[author].messages += 1;
+    credits[author].xp += 1;
+    if(credits[author].xp === 5) {
+        credits[author].xp = 0;
+        credits[author].credits += 1;
+        fs.writeFileSync(creditsPath, JSON.stringify(credits, null, 4));
+    }
+    fs.writeFileSync(creditsPath, JSON.stringify(credits, null, 4));
+ 
+   
+   if(args[0].toLowerCase() == `${prefix}credit` || args[0].toLowerCase() === `${prefix}credits`) {
+       let mention = message.mentions.users.first() || message.author;
+       let mentionn = message.mentions.users.first();
+       if(!credits[mention.id]) return message.channel.send(`**❎ |** Failed To Find the **Needed Data**.`);
+       if(!args[2]) {
+        let credits = new Discord.Rich()
+       .setColor("#36393e")
+       .addField(`❯ credits`, `» \`${credits[mention.id].credits} $\`\n`, true)
+       message.channel.send(credits);
+       
+       } else if(mentionn && args[2]) {
+           if(isNaN(args[2])) return message.channel.send(`**❎ |** The **"Number"** You Entered **Isn't Correct**.`);
+          if(mentionn.id === message.author.id) return message.channel.send(`**❎ |** You Can't Give **Credits** To **Yourself**.`);
+           if(args[2] > credits[author].credits) return message.channel.send(`**❎ |** You don't have **Enough** credits to give to ${mentionn}`);
+          let first = Math.floor(Math.random() * 9);
+          let second = Math.floor(Math.random() * 9);
+          let third = Math.floor(Math.random() * 9);
+          let fourth = Math.floor(Math.random() * 9);
+          let num = `${first}${second}${third}${fourth}`;
+         
+          message.channel.send(`**🛡 |** **Type** \`${num}\` To **Complete** the transfer!`).then(m => {
+              message.channel.awaitMessages(r => r.author.id === message.author.id, { max: 1, time: 20000, errors:['time'] }).then(collected => {
+                  let c = collected.first();
+                  if(c.content === num) {
+                          message.channel.send(`**✅ |** Successfully **Transfered** \`$${args[2]}\` !`);
+                          m.delete();
+                          c.delete();
+                          credits[author].credits += (-args[2]);
+                          credits[mentionn.id].credits += (+args[2]);
+                          fs.writeFileSync(creditsPath, JSON.stringify(credits, null, 4));
+                  } else {
+                          m.delete();
+                  }
+              });
+          });
+         
+      } else {
+          message.channel.send(`**❎ |** The **Syntax** should be like **\`${prefix}credits <Mention> [Ammount]\`**`);
+      }
+  } else if(args[0].toLowerCase() === `${prefix}daily`) {
+      if(credits[author].daily !== 86400000 && Date.now() - credits[author].daily !== 86400000) {
+          message.channel.send(`**❎ |** You already **Claimed** the daily ammount of credits since \`${pretty(Date.now() - credits[author].daily)}\`.`);
+      } else {
+          let ammount = getRandom(300, 500);
+          credits[author].daily = Date.now();
+          credits[author].credits += ammount;
+          fs.writeFileSync(creditsPath, JSON.stringify(credits, null, 4));
+          message.channel.send(`**✅ |** \`${ammount}\`, Successfully **Claimed** Your daily ammount of credits!`);
+      }
   }
-  
-    if(message.content.startsWith(prefix + "credit" || prefix + "credits")) {
-message.channel.send(`**${message.author.username}, your :credit_card: balance is \`\`${userData.credits}\`\`.**`);
-}
 });
-
-client.on('message', async message => {
-    let amount = 250;
-    if(message.content.startsWith(prefix + "daily")) {
-    if(message.author.bot) return;
-    if(coolDown.has(message.author.id)) return message.channel.send(`**:stopwatch: | ${message.author.username}, your daily :yen: credits refreshes in \`\`1 Day\`\`.**`);
-    
-    let userData = credits[message.author.id];
-    let m = userData.credits + amount;
-    credits[message.author.id] = {
-    credits: m
-    };
-
-    fs.writeFile("./creditsCode.json", JSON.stringify(userData.credits + amount), (err) => {
-    if (err) console.error(err);
-    });
-    
-    message.channel.send(`**:atm: | ${message.author.username}, you received your :yen: ${amount} credits!**`).then(() => {
-        coolDown.add(message.author.id);
-    });
-    
-    setTimeout(() => {
-       coolDown.remove(message.author.id);
-    },86400000);
-    }
-
-    if (message.content.toUpperCase() === `${prefix}payyou`) {
-
-        client.updateBal(message.author.id, 1000000) //.then((i) => { // money.updateBal grabs the (userID, value) value being how much you want to add, and puts it into 'i'.
-             message.channel.send(`**You got $1000000!**\n**New Balance:** ${i.money}`);
-        
-
-    }
-
-    if (message.content.toUpperCase() === `${prefix}payfine`) {
-
-        client.updateBal(message.author.id, -500).then((i) => { // Since the 'value' is -500, it will 'add' -500, making the bal $500 lower.
-            message.channel.send(`**You paid your fine of $500!**\n**New Balance:** ${i.money}`);
-        })
-
-    }
-});
-
 client.login(process.env.BOT_TOKEN);  //لا تحط التوكن حقك هنا
