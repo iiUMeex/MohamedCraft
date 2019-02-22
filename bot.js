@@ -36,11 +36,13 @@ client.on('message',async message => {
        let mentionn = message.mentions.users.first();
        if(!credits[mention.id]) return message.channel.send(`**❎ |** Failed To Find the **Needed Data**.`);
        if(!args[2]) {
-        let credits = new Discord.Rich()
+        let creditsEmbed = new Discord.RichEmbed()
        .setColor("#36393e")
+       .setAuthor(mention.username, mention.avatarURL)
        .setThumbnail(mention.avatarURL)
        .addField(`❯ الكردت`, `» \`${credits[mention.id].credits} $\`\n`, true)
-       message.channel.send(credits);
+       .addField(`❯ الرسائل`, `» \`${credits[mention.id].messages} 💬\``, true);
+       message.channel.send(creditsEmbed);
        
        } else if(mentionn && args[2]) {
            if(isNaN(args[2])) return message.channel.send(`**❎ |** The **"Number"** You Entered **Isn't Correct**.`);
