@@ -33,7 +33,7 @@ fs.writeFile("./creditsCode.json", JSON.stringify(credits), (err) => {
       credits: m + 1,
   }
   
-    if(message.content.startsWith(prefix + "credit" || prefix + "credits")) {
+    if(message.content.startsWith(prefix + "credit")) {
 message.channel.send(`**${message.author.username}, your :credit_card: balance is \`\`${userData.credits}\`\`.**`);
 }
 });
@@ -80,7 +80,7 @@ if(args[0].startsWith("*")) return  message.channel.send('**!! I Cant Do it**');
 				 let defineduser = '';
             let firstMentioned = message.mentions.users.first();
             defineduser = (firstMentioned)
-            if (!defineduser) return message.channel.send(`**Usage: ${prefix}trans @someone number**`);
+            if (!defineduser) return message.channel.send(`**Usage: ${prefix}credits @someone number**`);
             if(defineduser.id === message.author.id) return message.channel.send("***بجد والله ?!***")
             var mentionned = message.mentions.users.first();
 if (!profile[sender.id]) profile[sender.id] = {}
