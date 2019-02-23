@@ -62,13 +62,13 @@ if(message.content.startsWith(prefix + "daily")) {
 let cont = message.content.slice(prefix.length).split(" ");
 let args = cont.slice(2);
 let sender = message.author
-if(message.content.startsWith(prefix + 'trans')) {
-if (!args[0]) {message.channel.send(`**Usage: ${prefix}trans @someone amount**`); 
+if(message.content.startsWith(prefix + '$credits')) {
+if (!args[0]) {message.channel.send(`**Usage: ${prefix}$credits @someone amount**`); 
          return;
            }
         // We should also make sure that args[0] is a number
         if (isNaN(args[0])) {
-            message.channel.send(`**Usage: ${prefix}trans @someone number**`);
+            message.channel.send(`**Usage: ${prefix}$credits @someone number**`);
             return; // Remember to return if you are sending an error message! So the rest of the code doesn't run.
              }
              if(profile[message.author.id].credits < args[0]) return message.channel.send("**Your Credits is not enough  that**")
@@ -76,8 +76,8 @@ if(args[0].startsWith("-")) return  message.channel.send('**!! I Cant Do it**');
 				 let defineduser = '';
             let firstMentioned = message.mentions.users.first();
             defineduser = (firstMentioned)
-            if (!defineduser) return message.channel.send(`**Usage: ${prefix}trans @someone number**`);
-            if(defineduser.id === message.author.id) return message.channel.send("***Transfering to your self hah ?!***")
+            if (!defineduser) return message.channel.send(`**Usage: ${prefix}$credits @someone number**`);
+            if(defineduser.id === message.author.id) return message.channel.send("***بجد والله ?!***")
             var mentionned = message.mentions.users.first();
 if (!profile[sender.id]) profile[sender.id] = {}
 if (!profile[sender.id].credits) profile[sender.id].credits = 310;
