@@ -14,7 +14,7 @@ client.on('message', msg => {
 });
 
 var fs = require("fs");
-const credits = JSON.parse(fs.readFileSync("./creditsCode.json", "utf8"));
+let profile = JSON.parse(fs.readFileSync("./profile.json", "utf8"))
 client.on("message", message => {
   if (message.author.bot) return;
  if(!message.channel.guild)return;
@@ -52,9 +52,9 @@ message.channel.send(`** ${men.username}, :credit_card: balance` + " is `" + `${
 if(message.content.startsWith(prefix + "daily")) {
 
 
-  if(credits[message.author.id].lastDaily != moment().format('day')) {
-   credits[message.author.id].lastDaily = moment().format('day')
-   credits[message.author.id].credits += 310
+  if(profile[message.author.id].lastDaily != moment().format('day')) {
+   profile[message.author.id].lastDaily = moment().format('day')
+   profile[message.author.id].credits += 310
     message.channel.send(`:atm: |**${message.author.username} you collect your \`310\` :yen: daily credits!**`)
 } else {
     message.channel.send(`**:stopwatch: | ${message.author.username}, your daily :yen: credits refreshes ${moment().endOf('day').fromNow()}**`)
@@ -80,9 +80,9 @@ if(args[0].startsWith("-")) return  message.channel.send('**!! I Cant Do it**');
             if (!defineduser) return message.channel.send(`**Usage: ${prefix}trans @someone number**`);
             if(defineduser.id === message.author.id) return message.channel.send("***Transfering to your self hah ?!***")
             var mentionned = message.mentions.users.first();
-if (!credits[sender.id]) credits[sender.id] = {}
-if (!credits[sender.id].credits) credits[sender.id].credits = 310;
-fs.writeFile('./credits.json', JSON.stringify(credits), (err) => {
+if (!profile[sender.id]) profile[sender.id] = {}
+if (!profile[sender.id].credits) profile[sender.id].credits = 310;
+fs.writeFile('./profile.json', JSON.stringify(profile), (err) => {
 if (err) console.error(err);
 })
 var x = ['5587' ,' 9978' , '3785' , '7734' , '9864' , '7681' , '3758' , '7834' , '3489' , '1382' , '7389' , '8762' , '0889' , '0388' , '3316' , '0976' , '8603' , '1842' , '4565' , '9524' , '9524' , '0964' , '5930' , '5678' , '9567' , '6099' , '7058' , '0001' , '1324' , '9834' , '7668' , '0378' , '7055' , '9733' , '9876' , '9846' , '9685' , '8574' , '8975' , '9845' , '9862' , '0069' , '0807' , '0673' , '0813' , '1235' , '6879'];
@@ -98,7 +98,7 @@ var x2 = ['5587' ,' 9978' , '3785' , '7734' , '9864' , '7681' , '3758' , '7834' 
         })
         r.then(s=> {
       var mando = message.mentions.users.id;
-      if  (!credits[defineduser.id]) profile[defineduser.id] = {}
+      if  (!profile[defineduser.id]) profile[defineduser.id] = {}
       if (!profile[defineduser.id].credits) profile[defineduser.id].credits = 200;
       profile[defineduser.id].credits += (+args[0]);
       profile[sender.id].credits += (-args[0]);
@@ -110,4 +110,5 @@ mentionned.send(`:credit_card: | Transfer Receipt \`\`\`\`You have received ${ar
         })
 }
 });
+
 client.login(process.env.BOT_TOKEN);  //لا تحط التوكن حقك هنا
