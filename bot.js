@@ -461,7 +461,7 @@ client.on('message',async message => {
 if(!message.channel.guild) return message.reply(' ');
  
  
-  let submite = message.guild.channels.find(`name`, "test-bot);
+  let submite = message.guild.channels.find(`name`, "cmd);
  
   if(!submite) return message.channel.send("لايوجد روم خاص للي يوصل الشراء اليه :x:");
   let filter = m => m.author.id === message.author.id;
