@@ -121,7 +121,7 @@ mentionned.send(```:credit_card: | Transfer Receipt \`\`\`\`You have received ${
                message.channel.sendEmbed(embed)
         })
         })
-}
+})
 });
 
 client.on('guildMemberAdd', member => {
