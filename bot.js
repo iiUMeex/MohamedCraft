@@ -1,3 +1,10 @@
+const Discord = require('discord.js');
+const client = new Discord.Client();
+var prefix = '-'
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+});
+
 client.on('raw', packet => {
 if(!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
 if (packet.t == 'MESSAGE_REACTION_ADD') {
